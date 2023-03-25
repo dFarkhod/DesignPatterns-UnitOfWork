@@ -12,20 +12,17 @@ namespace UnitOfWorkDemo.Controllers
     {
         private readonly ILogger<DepartmentController> _logger;
         private readonly IDepartmentRepository _repo;
-        private readonly IUnitOfWork<int> _unitOfWork;
-
-
-        public DepartmentController(ILogger<DepartmentController> logger, IUnitOfWork<int> unitOfWork, IDepartmentRepository repo)
+        
+        public DepartmentController(ILogger<DepartmentController> logger, IDepartmentRepository repo)
         {
             _logger = logger;
-            _unitOfWork = unitOfWork;
             _repo = repo;
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<DepartmentDto>> GetById(int id)
         {
-            var department = await _repo.GetByIdAsync(id); //await _unitOfWork.Repository<Department>().GetByIdAsync(id); // _repo.GetByIdAsync(id);
+            var department = await _repo.GetByIdAsync(id);
             if (department == null)
             {
                 return NotFound();
@@ -40,7 +37,7 @@ namespace UnitOfWorkDemo.Controllers
         public async Task<ActionResult<List<DepartmentDto>>> GetAll()
         {
             List<DepartmentDto> result = null;
-            var staffs = await _repo.GetAllAsync(); //await _unitOfWork.Repository<Department>().GetAllAsync(); //_repo.GetAllAsync();
+            var staffs = await _repo.GetAllAsync();
             if (staffs != null)
             {
                 result = staffs.Adapt<List<DepartmentDto>>();
