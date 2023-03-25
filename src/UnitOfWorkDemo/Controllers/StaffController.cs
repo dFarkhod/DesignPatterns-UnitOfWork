@@ -50,9 +50,17 @@ namespace UnitOfWorkDemo.Controllers
                 var newStaff = staff.Adapt<Staff>();
 
                 await _unitOfWork.Repository<Staff>().AddAsync(newStaff);
+
+                var existingDept = await _unitOfWork.Repository<Department>().GetByIdAsync(staff.DepartmentId);
+                if (existingDept != null)
+                {
+                    existingDept.StaffList.Add(newStaff);
+                    await _unitOfWork.Repository<Department>().UpdateAsync(existingDept);
+                }
                 await _unitOfWork.Commit();
 
-                return CreatedAtAction(nameof(GetById), new { id = newStaff.Id }, newStaff);
+                var result = newStaff.Adapt<StaffDto>();
+                return CreatedAtAction(nameof(GetById), new { id = result.Id }, result);
             }
             catch (Exception ex)
             {

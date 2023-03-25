@@ -8,5 +8,6 @@ namespace UnitOfWorkDemo.Entities
         public DateTime HireDate { get; set; }
         public string Title { get; set; }
         public Department Department { get; set; }
+        public int DepartmentId { get; set; }
     }
 }

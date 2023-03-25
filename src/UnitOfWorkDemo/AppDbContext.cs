@@ -23,6 +23,17 @@ namespace UnitOfWorkDemo
         public DbSet<Department> Departments { get; set; }
 
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Department>()
+                .HasMany(dept => dept.StaffList)
+                .WithOne(staff => staff.Department)
+                .HasForeignKey(i => i.DepartmentId);
+
+            modelBuilder.Entity<Department>().Navigation(e => e.StaffList).AutoInclude();
+        }
+
+
         // audit trail design pattern
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new())
         {

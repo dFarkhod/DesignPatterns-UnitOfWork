@@ -12,17 +12,20 @@ namespace UnitOfWorkDemo.Controllers
     {
         private readonly ILogger<DepartmentController> _logger;
         private readonly IDepartmentRepository _repo;
+        private readonly IUnitOfWork<int> _unitOfWork;
 
-        public DepartmentController(ILogger<DepartmentController> logger, IDepartmentRepository repo)
+
+        public DepartmentController(ILogger<DepartmentController> logger, IUnitOfWork<int> unitOfWork, IDepartmentRepository repo)
         {
             _logger = logger;
+            _unitOfWork = unitOfWork;
             _repo = repo;
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<DepartmentDto>> GetById(int id)
         {
-            var department = await _repo.GetByIdAsync(id);
+            var department = await _repo.GetByIdAsync(id); //await _unitOfWork.Repository<Department>().GetByIdAsync(id); // _repo.GetByIdAsync(id);
             if (department == null)
             {
                 return NotFound();
@@ -36,10 +39,12 @@ namespace UnitOfWorkDemo.Controllers
         [HttpGet]
         public async Task<ActionResult<List<DepartmentDto>>> GetAll()
         {
-            var staffs = await _repo.GetAllAsync();
-
-            var result = staffs.Adapt<IList<DepartmentDto>>();
-
+            List<DepartmentDto> result = null;
+            var staffs = await _repo.GetAllAsync(); //await _unitOfWork.Repository<Department>().GetAllAsync(); //_repo.GetAllAsync();
+            if (staffs != null)
+            {
+                result = staffs.Adapt<List<DepartmentDto>>();
+            }
             return Ok(result);
         }
 
@@ -49,8 +54,11 @@ namespace UnitOfWorkDemo.Controllers
             try
             {
                 var newDepartment = staff.Adapt<Department>();
-                await _repo.AddAsync(newDepartment);
-                return CreatedAtAction(nameof(GetById), new { id = newDepartment.Id }, newDepartment);
+                await _repo.AddAsync(newDepartment); //_unitOfWork.Repository<Department>().AddAsync(newDepartment); //_repo.AddAsync(newDepartment);
+                //await _unitOfWork.Commit();
+
+                var result = newDepartment.Adapt<DepartmentDto>();
+                return CreatedAtAction(nameof(GetById), new { id = result.Id }, result);
             }
             catch (Exception ex)
             {

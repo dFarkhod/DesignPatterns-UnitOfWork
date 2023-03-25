@@ -24,8 +24,9 @@ namespace UnitOfWorkDemo.Repository
         private readonly AppDbContext _dbContext;
         public IQueryable<Department> Entities => _dbContext.Set<Department>();
 
-        public DepartmentRepository()
+        public DepartmentRepository(AppDbContext dbContext)
         {
+            _dbContext = dbContext;
         }
 
         public async Task<Department> AddAsync(Department entity)

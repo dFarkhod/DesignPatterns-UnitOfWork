@@ -14,5 +14,11 @@ namespace UnitOfWorkDemo.Repository
         {
             _repo = repo;
         }
+
+        public List<Staff> GetStaffWithoutDepartment()
+        {
+            return _repo.Entities.Where(s => s.Department == null)?.ToList();
+        }
+
     }
 }
