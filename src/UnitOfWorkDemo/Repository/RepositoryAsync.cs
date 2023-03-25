@@ -18,7 +18,7 @@ namespace UnitOfWorkDemo.Repository
         Task DeleteAsync(T entity);
     }
 
-    public class RepositoryAsync<T, TId> : IRepositoryAsync<T, TId> where T : AuditableEntity<TId>
+    public class RepositoryAsync<T, TId> : IRepositoryAsync<T, TId> where T : BaseEntity<TId>
     {
         private readonly AppDbContext _dbContext;
 
@@ -43,9 +43,7 @@ namespace UnitOfWorkDemo.Repository
 
         public async Task<List<T>> GetAllAsync()
         {
-            return await _dbContext
-                .Set<T>()
-                .ToListAsync();
+            return await _dbContext.Set<T>().ToListAsync();
         }
 
         public async Task<T> GetByIdAsync(TId id)

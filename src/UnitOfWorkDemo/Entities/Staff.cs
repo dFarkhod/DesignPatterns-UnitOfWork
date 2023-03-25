@@ -1,7 +1,7 @@
 ﻿
 namespace UnitOfWorkDemo.Entities
 {
-    public class Staff : AuditableEntity<int>
+    public class Staff : BaseEntity<int>
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }

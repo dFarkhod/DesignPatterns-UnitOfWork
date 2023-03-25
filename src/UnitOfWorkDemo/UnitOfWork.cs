@@ -6,7 +6,7 @@ namespace UnitOfWorkDemo
 {
     public interface IUnitOfWork<TId> : IDisposable
     {
-        IRepositoryAsync<T, TId> Repository<T>() where T : AuditableEntity<TId>;
+        IRepositoryAsync<T, TId> Repository<T>() where T : BaseEntity<TId>;
 
         Task<int> Commit();
 
@@ -23,7 +23,7 @@ namespace UnitOfWorkDemo
             _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
         }
 
-        public IRepositoryAsync<TEntity, TId> Repository<TEntity>() where TEntity : AuditableEntity<TId>
+        public IRepositoryAsync<TEntity, TId> Repository<TEntity>() where TEntity : BaseEntity<TId>
         {
             if (_repositories == null)
                 _repositories = new Hashtable();
