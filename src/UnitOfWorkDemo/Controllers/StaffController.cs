@@ -19,7 +19,7 @@ namespace UnitOfWorkDemo.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Staff>> GetById(int id)
+        public async Task<ActionResult<StaffDto>> GetById(int id)
         {
             var _staff = await _unitOfWork.Repository<Staff>().GetByIdAsync(id);
             if (_staff == null)
@@ -33,7 +33,7 @@ namespace UnitOfWorkDemo.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<ActionResult<List<StaffDto>>> GetAll()
         {
             var staffs = await _unitOfWork.Repository<Staff>().GetAllAsync();
 
@@ -86,7 +86,7 @@ namespace UnitOfWorkDemo.Controllers
             {
                 _logger.LogError($"Error in Update(): {ex.Message}", ex);
                 await _unitOfWork.Rollback();
-                return StatusCode(500, "An error occurred while updating the staff.");
+                return StatusCode(500, "An error occurred while updating an object.");
             }
         }
 

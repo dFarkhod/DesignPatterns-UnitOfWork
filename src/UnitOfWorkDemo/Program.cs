@@ -5,7 +5,7 @@ using UnitOfWorkDemo.Services;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<AppDbContext>(options =>
-       options.UseInMemoryDatabase("StaffDb"));
+       options.UseInMemoryDatabase("CompanyDb"));
 
 builder.Services.AddTransient(typeof(IUnitOfWork<>), typeof(UnitOfWork<>));
 builder.Services.AddTransient<IDateTimeService, SystemDateTimeService>();

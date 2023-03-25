@@ -53,8 +53,8 @@ namespace UnitOfWorkDemo.Repository
 
         public Task UpdateAsync(T entity)
         {
-            T exist = _dbContext.Set<T>().Find(entity.Id);
-            _dbContext.Entry(exist).CurrentValues.SetValues(entity);
+            T existingItem = _dbContext.Set<T>().Find(entity.Id);
+            _dbContext.Entry(existingItem).CurrentValues.SetValues(entity);
             return Task.CompletedTask;
         }
     }

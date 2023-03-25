@@ -15,10 +15,13 @@ namespace UnitOfWorkDemo
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseInMemoryDatabase(databaseName: "StaffDb");
+            optionsBuilder.UseInMemoryDatabase(databaseName: "CompanyDb");
         }
 
         public DbSet<Staff> Staffs { get; set; }
+
+        public DbSet<Department> Departments { get; set; }
+
 
         // audit trail design pattern
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new())
