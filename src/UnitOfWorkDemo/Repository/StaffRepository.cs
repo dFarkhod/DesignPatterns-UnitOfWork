@@ -4,6 +4,7 @@ namespace UnitOfWorkDemo.Repository
 {
     public interface IStaffRepository
     {
+        List<Staff> GetStaffWithoutDepartment();
     }
 
     public class StaffRepository : IStaffRepository
