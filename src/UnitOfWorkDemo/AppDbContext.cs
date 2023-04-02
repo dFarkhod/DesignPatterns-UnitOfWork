@@ -22,6 +22,7 @@ namespace UnitOfWorkDemo
 
         public DbSet<Department> Departments { get; set; }
 
+        public DbSet<StaffActionJournal> StaffActionJournal { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

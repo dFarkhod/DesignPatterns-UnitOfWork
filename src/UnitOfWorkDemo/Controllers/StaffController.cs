@@ -50,13 +50,28 @@ namespace UnitOfWorkDemo.Controllers
                 var newStaff = staff.Adapt<Staff>();
 
                 await _unitOfWork.Repository<Staff>().AddAsync(newStaff);
-
+                string jrnlDetails = string.Empty;
+                string departmentName = string.Empty;
                 var existingDept = await _unitOfWork.Repository<Department>().GetByIdAsync(staff.DepartmentId);
                 if (existingDept != null)
                 {
-                    existingDept.StaffList.Add(newStaff);
-                    await _unitOfWork.Repository<Department>().UpdateAsync(existingDept);
+                    jrnlDetails = $"Id={newStaff.Id} hodim ({newStaff.FullName}), Id={newStaff.DepartmentId} bo'limiga ({existingDept.Title}) o'tdi.";
                 }
+                else
+                {
+                    jrnlDetails = $"Id={newStaff.Id} hodim ({newStaff.FullName}), Id={newStaff.DepartmentId} bo'limiga o'tdi.";
+                }
+
+                StaffActionJournal jrnlRecord = new StaffActionJournal
+                {
+                    Date = DateTime.Now,
+                    DepartmentId = newStaff.DepartmentId,
+                    StaffId = newStaff.Id,
+                    Details = jrnlDetails
+                };
+
+                await _unitOfWork.Repository<StaffActionJournal>().AddAsync(jrnlRecord);
+
                 await _unitOfWork.Commit();
 
                 var result = newStaff.Adapt<StaffDto>();
