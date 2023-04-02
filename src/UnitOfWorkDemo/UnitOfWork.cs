@@ -65,11 +65,9 @@ namespace UnitOfWorkDemo
             {
                 if (disposing)
                 {
-                    //dispose managed resources
                     _dbContext.Dispose();
                 }
             }
-            //dispose unmanaged resources
             disposed = true;
         }
     }
